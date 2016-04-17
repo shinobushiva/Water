@@ -142,7 +142,7 @@ if( isset( $_POST['submit'] ) ){
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             })
             m.style.width = window.innerWidth + 'px'
-            m.style.height = window.innerHeight - (document.getElementById('tools').clientHeight) + 'px'
+            m.style.height = window.innerHeight - (document.getElementById('post').clientHeight) + 'px'
             var elem = document.getElementById('time'),
                 n = new Date()
                 // Create time now
