@@ -40,43 +40,8 @@ if( isset( $_POST['submit'] ) ){
         <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
         <meta http-equiv="content-style-type" content="text/css">
         <meta http-equiv="content-script-type" content="text/javascript">
-        <link rel="stylesheet" href="base.css">
-        <style>
-            body {
-                font-family: sans-serif
-            }
-            
-            #post {
-                text-align: center;
-                padding-bottom: 20px;
-            }
-            
-            input[type=submit] {
-                width: 100%;
-            }
-            
-            #comment {
-                width: 80%
-            }
-            
-            .box {
-                margin-top: 20px
-            }
-            
-            .memo {
-                font-size: 10px
-            }
-            
-            .btn {
-                width: 50%;
-                height: 40px;
-                font-size: 20px;
-                font-weight: bold;
-                background: rgba(240, 240, 240, 1);
-                line-height: 28pt;
-                text-align: center;
-            }
-        </style>
+        <link rel="stylesheet" href="public/css/base.css">
+        <link rel="stylesheet" href="public/css/app.css">
     </head>
 
     <body>
@@ -124,41 +89,42 @@ if( isset( $_POST['submit'] ) ){
         <script>
             document.getElementById('small').addEventListener('click', function () {
                 if (map.zoom > 0) map.setZoom(--map.zoom)
-            })
+            });
 
             document.getElementById('big').addEventListener('click', function () {
                 map.setZoom(++map.zoom)
-            })
+            });
             var map,
                 markers = ['no', 'ok', 'go'],
-                marker = 0 // Selected marker
+                marker = 0; // Selected marker
             if (!navigator.geolocation)
-                document.getElementById('now').style.display = 'none'
-            var m = document.getElementById('map')
+                document.getElementById('now').style.display = 'none';
+            var m = document.getElementById('map');
 
             map = new google.maps.Map(m, {
                 center: new google.maps.LatLng(32.7858659, 130.7633434),
                 zoom: 9,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
-            })
-            m.style.width = window.innerWidth + 'px'
-            m.style.height = window.innerHeight - (document.getElementById('post').clientHeight) + 'px'
-            var elem = document.getElementById('time'),
-                n = new Date()
+            });
+            m.style.width = window.innerWidth + 'px';
+            m.style.height = window.innerHeight - (document.getElementById('post').clientHeight) + 'px';
+            var elem = document.getElementById('time');
+            var n = new Date();
                 // Create time now
-            var month = n.getMonth() + 1,
-                hours = n.getHours(),
-                day = n.getDate(),
-                minutes = n.getMinutes()
-            month = month.toString().length > 1 ? month : '0' + month
-            hours = hours.toString().length > 1 ? hours : '0' + hours
-            day = day.toString().length > 1 ? day : '0' + day
-            minutes = minutes.toString().length > 1 ? minutes : '0' + minutes
-            elem.value = '16' + month + day + hours + minutes
-            var nowPosition
+            var month = n.getMonth() + 1;
+            var hours = n.getHours();
+            var day = n.getDate();
+            var minutes = n.getMinutes();
+
+            month = month.toString().length > 1 ? month : '0' + month;
+            hours = hours.toString().length > 1 ? hours : '0' + hours;
+            day = day.toString().length > 1 ? day : '0' + day;
+            minutes = minutes.toString().length > 1 ? minutes : '0' + minutes;
+            elem.value = '16' + month + day + hours + minutes;
+            var nowPosition;
             map.addListener('click', function (e) {
-                alert('位置を変更しました．間違いがなければ "投稿" ボタンをクリックしてください．')
-                var latlng = e.latLng
+                alert('位置を変更しました．間違いがなければ "投稿" ボタンをクリックしてください．');
+                var latlng = e.latLng;
                     // Get status
                 marker = Number(document.getElementById('flg').value)
                     // console.log( 'set position : ', e )
@@ -167,39 +133,45 @@ if( isset( $_POST['submit'] ) ){
                 nowPosition = new google.maps.Marker({
                     position: latlng,
                     map: map,
-                    icon: markers[marker] + '.png'
+                    icon: 'public/image/' + markers[marker] + '.png'
                 })
-            })
+            });
 
             function now() {
                 navigator.geolocation.getCurrentPosition(function (position) {
-                        var data = position.coords
-                        var lat = data.latitude,
-                            lng = data.longitude
-                        document.getElementById('locate').value = lat + ',' + lng
-                        var latlng = new google.maps.LatLng(lat, lng),
-                            flg
-                        marker = document.getElementById('flg').value
-                        if (nowPosition) nowPosition.setMap(null)
+                        var data = position.coords;
+                        var lat = data.latitude;
+                        var lng = data.longitude;
+
+                        document.getElementById('locate').value = lat + ',' + lng;
+
+                        var latlng = new google.maps.LatLng(lat, lng);
+                        var flg;
+
+                        marker = document.getElementById('flg').value;
+
+                        if (nowPosition) nowPosition.setMap(null);
+
                         nowPosition = new google.maps.Marker({
                             position: latlng,
                             map: map,
-                            icon: markers[marker] + '.png'
-                        })
-                        alert('間違いがなければ "投稿" ボタンをクリックしてください．')
+                            icon: 'public/image/' + markers[marker] + '.png'
+                        });
+                        alert('間違いがなければ "OK" ボタンをクリックしてください．');
                     },
                     function (error) {
-                        var err_msg
+                        var errMsg = '';
+
                         switch (error.code) {
                         case 1:
-                            errMsg = "位置情報の利用が許可されていません．設定から位置情報の使用を許可してください．"
-                            break
+                            errMsg = "位置情報の利用が許可されていません．設定から位置情報の使用を許可してください．";
+                            break;
                         case 2:
-                            errMsg = "デバイスの位置が判定できません．"
-                            break
+                            errMsg = "デバイスの位置が判定できません．";
+                            break;
                         case 3:
-                            errMsg = "タイムアウトしました．"
-                            break
+                            errMsg = "タイムアウトしました．";
+                            break;
                         }
                         alert("位置情報の取得に失敗しました．" + errMsg)
                     }
@@ -207,17 +179,18 @@ if( isset( $_POST['submit'] ) ){
             }
 
             function updateValue() {
-                if (!nowPosition) return
-                var n1 = nowPosition.position.lat(),
-                    n2 = nowPosition.position.lng()
-                marker = Number(document.getElementById('flg').value)
-                nowPosition.setMap(null)
+                if (!nowPosition) return;
+
+                var n1 = nowPosition.position.lat();
+                var n2 = nowPosition.position.lng();
+                marker = Number(document.getElementById('flg').value);
+                nowPosition.setMap(null);
                 nowPosition = new google.maps.Marker({
                     position: new google.maps.LatLng(n1, n2),
                     map: map,
-                    icon: markers[marker] + '.png'
-                })
-                return true
+                    icon: 'public/image/' + markers[marker] + '.png'
+                });
+                return true;
             }
         </script>
 
