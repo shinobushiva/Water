@@ -16,7 +16,7 @@
         #postBtn {
             width: 100%;
             height: 45px;
-            background: #fff;
+            background: rgba(240, 240, 240, 1);
             text-align: center;
             font-size: 20px;
             font-weight: bold;
@@ -43,17 +43,21 @@
 <body>
 
     <div id="tools">
-       水道から水が出ていますか？
+        <div style="margin:15px 0;text-align:center">
+            水道から水が出ていますか？
+        </div>
         <a href="post.php">
             <div id="postBtn">投稿する</div>
         </a>
 
         <span class="memo">
+               <br>
                 <img src="no.png"> 水が出ない<br>
                 <img src="ok.png"> 水は出る<br>
                 <img src="go.png"> 水の提供可能
             </span>
-            <br><br>
+        <br>
+        <br>
         <div id="customZoomBtn">
             <div id="small" class="float_l btn">ズームアウト</div>
             <div id="big" class="float_l btn">ズームイン</div>
@@ -70,14 +74,15 @@
             markers = ['no', 'ok', 'go', 'go']
 
         var m = document.getElementById('map')
-        m.style.width = window.innerWidth + 'px'
-        m.style.height = window.innerHeight - (document.getElementById('tools').clientHeight) + 'px'
 
         map = new google.maps.Map(m, {
             center: new google.maps.LatLng(32.7858659, 130.7633434),
             zoom: 9,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         })
+        
+        m.style.width = window.innerWidth + 'px'
+        m.style.height = window.innerHeight - (document.getElementById('tools').clientHeight) + 'px'
 
         // Set Data
         var position = <?php
