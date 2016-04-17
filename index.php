@@ -19,14 +19,30 @@
                 line-height: 34pt;
                 color: #000;
             }
+            .btn {
+                width: 50%;
+                height: 40px;
+                font-size: 20px;
+                font-weight: bold;
+                background: rgba(240,240,240,1);
+                line-height: 28pt;
+                text-align: center;
+            }
         </style>
     </head>
 
     <body>
 
-        <a href="post.php">
-            <div id="postBtn">投稿する</div>
-        </a>
+        <div id="tools">
+            <a href="post.php">
+                <div id="postBtn">投稿する</div>
+            </a>
+
+            <div id="customZoomBtn">
+                <div id="small" class="float_l btn">-</div>
+                <div id="big" class="float_l btn">+</div>
+            </div>
+        </div>
 
         <!-- View map -->
         <div id="map"></div>
@@ -40,7 +56,7 @@
 
             var m = document.getElementById( 'map' )
             m.style.width  = window.innerWidth + 'px'
-            m.style.height = window.innerHeight - 45 + 'px'
+            m.style.height = window.innerHeight - (document.getElementById('tools').clientHeight) + 'px' 
 
             map = new google.maps.Map( m, {
                 center: new google.maps.LatLng( 32.7858659,130.7633434 ),
@@ -61,12 +77,7 @@
 
                 mysqli_select_db( $connect, '' );
 
-                $now = time();
-                $from_time = $now - (60 * 60 * 24 * 2);
-                error_log($from_time);
-                $query = 'select * from info where time>'.$from_time;
-                error_log($query);
-                $res = mysqli_query( $connect, $query);
+                $res = mysqli_query( $connect, 'select * from info where time>16'. (date('m')-1). date('d') .'00' );
                 $json = '[';
                 while( $data = mysqli_fetch_array( $res ) ){
                     $json = $json. '{locate:"'. $data['locate']. '",time:'. $data['time'] .',flg:'. $data['flg']. '},';
@@ -77,20 +88,28 @@
 
                 mysqli_close( $connect );
 
-            ?>
+                ?>
 
-            // console.log( position ) // => [{Data},{Data}...,{}]
+                // console.log( position ) // => [{Data},{Data}...,{}]
 
-            var data
-            for( var i=0; i<position.length-1; i++ ){
-                data = position[i]['locate'].split(/,/)
-                console.log(position[i].flg)
-                new google.maps.Marker( {
-                    position: new google.maps.LatLng( data[0], data[1] ),
-                    map: map,
-                    icon: markers[position[i].flg] + '.png'
-                } )
-            }
+                var data
+                for( var i=0; i<position.length-1; i++ ){
+                    data = position[i]['locate'].split(/,/)
+                    console.log(position[i].flg)
+                    new google.maps.Marker( {
+                        position: new google.maps.LatLng( data[0], data[1] ),
+                        map: map,
+                        icon: markers[position[i].flg] + '.png'
+                    } )
+                }
+
+            document.getElementById( 'small' ).addEventListener( 'click', function(){
+                if( map.zoom > 0 ) map.setZoom(--map.zoom)
+                    } )
+
+            document.getElementById( 'big' ).addEventListener( 'click', function(){
+                map.setZoom(++map.zoom)
+            } )
 
         </script>
 
