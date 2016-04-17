@@ -6,7 +6,7 @@ if( isset( $_POST['submit'] ) ){
     $flg     = $_POST['flg'];
     $locate  = $_POST['locate'];
     $comment = $_POST['comment'];
-    
+
     $err = '不正な値が入力された可能性があります．投稿に失敗しました．';
 
     if( $time != '' && $flg != '' && $locate != '' ){
@@ -18,25 +18,25 @@ if( isset( $_POST['submit'] ) ){
         mysqli_set_charset( $connect, 'utf8' );
 
         mysqli_select_db( $connect, '' );
-        
+
         if( $comment == '' )
             $comment = 'null';
-        
+
         $time    = mysqli_real_escape_string( $connect, $time );
         $locate  = mysqli_real_escape_string( $connect, $locate );
         $flg     = mysqli_real_escape_string( $connect, $flg );
         $comment = mysqli_real_escape_string( $connect, $comment );
-        
+
         $query = "insert into info ( time, locate, flg, comment ) values (". $time .",'".  $locate ."',". $flg .", '". $comment ."');";
         $res = mysqli_query( $connect, $query );
 
         if( $res ) header( 'Location: index.php' );
         else echo $err. '(01)';
-        
+
         mysqli_close($connect);
 
-    } else echo $err. '(02)';
 
+    } else echo $err. '(02)';
 }
 
 ?>
@@ -73,10 +73,10 @@ if( isset( $_POST['submit'] ) ){
     <body>
 
         <form action="<?php print($_SERVER['PHP_SELF']) ?>" method="POST" id="post">
-           
+
             <input type="hidden" id="time" name="time" value="">
             <input type="hidden" name="locate" id="locate" value="">
-            
+
             <div class="box">
                 <select name="flg" id="flg" onchange="updateValue()">
                     <option value="0" selected>水が出ない</option>
@@ -123,7 +123,7 @@ if( isset( $_POST['submit'] ) ){
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 } )
 
-                var elem = document.getElementById( 'time' ), 
+                var elem = document.getElementById( 'time' ),
                     n    = new Date()
 
                 // Create time now
@@ -137,7 +137,8 @@ if( isset( $_POST['submit'] ) ){
                 day     = day.toString().length > 1 ? day : '0' + day
                 minutes = minutes.toString().length > 1 ? minutes : '0' + minutes
 
-                elem.value = '16' + month + day + hours + minutes
+                elem.value = ''+ Math.round(Date.now()/1000);//'16' + month + hours + minutes
+                console.log(elem.value);
 
                 var nowPosition
                 map.addListener( 'click', function( e ){
@@ -191,7 +192,7 @@ if( isset( $_POST['submit'] ) ){
                         }
                         alert( "位置情報の取得に失敗しました．" + errMsg )
                     }
-                                                            )
+                  )
                 }
 
             function updateValue(){
