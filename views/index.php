@@ -56,6 +56,9 @@
             <div id="slider-range"></div>
         </div>
     </div>
+    <div class="memo">
+            熊本県の断水解消・応急給水活動最新情報=><a href="http://www.city.kumamoto.jp/kinkyu/pub/default.aspx?c_id=3 宇土市 http://www.city.uto.kumamoto.jp/q/aview/61/13170.html">ク>リック</a>
+    </div>
 </div>
 
 <!-- View map -->
