@@ -66,6 +66,10 @@
 <!--</div>-->
 <!-- Set up your HTML -->
 <div id="breaking_news" class="owl-carousel"></div>
+<div id="comment_aria">
+    <h3>コメント一覧</h3>
+    <div id="comments" class="scroll"></div>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="js/jquery.ui.touch-punch.min.js"></script>
