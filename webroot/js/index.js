@@ -6,36 +6,40 @@ var infoWindows = [];
 
 var tools_height = document.getElementById('tools').clientHeight;
 function attachMessage(marker, post_time, flg, comment) {
+
+    var t = new Date(post_time * 1000);
+
+    var year = t.getFullYear();
+    var month = t.getMonth() + 1;
+    var hours = t.getHours();
+    var date = t.getDate();
+    // Minutes part from the timestamp
+    var minutes = "0" + t.getMinutes();
+    // Seconds part from the timestamp
+    var seconds = "0" + t.getSeconds();
+
+    // Will display time in 10:30:23 format
+    var formattedTime = year + "年" + month + "月" + date + "日" + hours + '時' + minutes.substr(-2) + '分' + seconds.substr(-2) + "秒";
+
+    var flg_str = "";
+    if (flg == "no") {
+        flg_str = '<img src="no.png" > 水が出ない';
+    } else if (flg == "ok") {
+        flg_str = '<img src="ok.png" > 水が出る';
+    } else if (flg == "go") {
+        flg_str = '<img src="go.png" > 水の提供可能';
+    }
+
+    var comment_str = "";
+
+    if(comment != "null"){
+        comment_str = comment;
+    }
+
+    var pos = marker.getPosition();
+    $('#comments').append('<a href="javascript:clickComment(' + pos.lat() + ',' + pos.lng() + ');">' + formattedTime + ' ' + flg_str + ' ' + comment_str + '</a><br/>');
+
     google.maps.event.addListener(marker, 'click', function (event) {
-
-        var t = new Date(post_time * 1000);
-
-        var year = t.getFullYear();
-        var month = t.getMonth() + 1;
-        var hours = t.getHours();
-        var date = t.getDate();
-        // Minutes part from the timestamp
-        var minutes = "0" + t.getMinutes();
-        // Seconds part from the timestamp
-        var seconds = "0" + t.getSeconds();
-
-        // Will display time in 10:30:23 format
-        var formattedTime = year + "年" + month + "月" + date + "日" + hours + '時' + minutes.substr(-2) + '分' + seconds.substr(-2) + "秒";
-
-        var flg_str = "";
-        if (flg == "no") {
-            flg_str = '<img src="no.png" > 水が出ない';
-        } else if (flg == "ok") {
-            flg_str = '<img src="ok.png" > 水が出る';
-        } else if (flg == "go") {
-            flg_str = '<img src="go.png" > 水の提供可能';
-        }
-
-        var comment_str = "";
-
-        if(comment != "null"){
-            comment_str = comment;
-        }
 
         new google.maps.Geocoder().geocode({
             latLng: marker.getPosition()
@@ -43,7 +47,6 @@ function attachMessage(marker, post_time, flg, comment) {
             if (status == google.maps.GeocoderStatus.OK) {
 
                 closeAllInfoWindows();
-
                 var ifw = new google.maps.InfoWindow({
                     content: "<div class='infowin'>" + formattedTime + "<br>" + flg_str + " " + comment_str + "<br>" + result[2].formatted_address + "</div>"
                 });
@@ -93,7 +96,7 @@ function plotData(t_position) {
     var data   = JSON.parse( sessionStorage.getItem( 'google-map-post-location' ) ),
         center = new google.maps.LatLng(data ? data.lat : window.DEFAULT_LAT, data ? data.lng : window.DEFAULT_LNG ),
         zoom   = data ? data.zoom : window.DEFAULT_ZOOM
-    
+
     var map = new google.maps.Map(m, {
         center: center,
         zoom: zoom,
@@ -136,6 +139,7 @@ function plotData(t_position) {
     // });
 
     removeMarkers();
+    $('#comments').empty();
 
     var data;
     var no_count = 0, ok_count = 0, go_count = 0;
@@ -239,4 +243,5 @@ function removeMarkers(){
     for(i=0; i<gmarkers.length; i++){
         gmarkers[i].setMap(null);
     }
+
 }

@@ -73,3 +73,18 @@ body {
 .owl-carousel .item a {
     color: black;
 }
+
+#comment_aria {
+  padding-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.scroll {
+  overflow: scroll;
+  margin: 0 auto;
+  text-align: left;
+  padding-top: 10px;
+  width: 50%;
+  height: 300px;
+}
