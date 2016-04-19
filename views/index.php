@@ -58,6 +58,11 @@
             <div id="slider-range"></div>
         </div>
     </div>
+    <div class="memo">
+            通水、給水等の情報：
+            <a href="http://www.city.kumamoto.jp/kinkyu/pub/default.aspx?c_id=3">熊本県の情報</a>/
+            <a href="http://www.city.uto.kumamoto.jp/q/aview/61/13170.html">宇土市の情報</a>
+    </div>
 </div>
 
 <!-- View map -->
