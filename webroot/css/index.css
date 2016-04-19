@@ -40,11 +40,6 @@ body {
     text-align: center;
 }
 
-#slider-range {
-    margin-right: 10px;
-    margin-top: 10px;
-}
-
 .infowin {
     line-height: 18px;
 }
@@ -72,4 +67,29 @@ body {
 
 .owl-carousel .item a {
     color: black;
+}
+
+
+#slider-range {
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+#slider-range .ui-slider-range {
+    background: #F79B30;
+}
+
+#slider-range .ui-slider-handle {
+    border-color: #c0c0c0;
+    background: #F79B30;
+    border-radius: 10px;
+    moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+.ui-slider-horizontal {
+    height: 0.3em;
+}
+.ui-slider-horizontal .ui-slider-handle {
+    top: -.5em;
+    margin-left: -.6em;
 }
