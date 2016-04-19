@@ -39,6 +39,13 @@ function attachMessage(marker, post_time, flg, comment) {
             comment_str = comment;
         }
 
+        var now = new Date();
+        var del_str = "";
+        //5分以内なら削除可能
+        if(parseInt(now.getTime() / 1000) < (parseInt(post_time) + (60 * 5))){
+            del_str = "<br><br>" + "<a href='' onclick='document.del.submit();return false;'>この情報を削除する</a>" + "<form name='del' method='POST' action='delete.php'>" + "<input type=hidden name='post_time' value='" + post_time +"'> ";
+        }
+
         new google.maps.Geocoder().geocode({
             latLng: marker.getPosition()
         }, function (result, status) {
@@ -47,7 +54,7 @@ function attachMessage(marker, post_time, flg, comment) {
                 closeAllInfoWindows();
 
                 var ifw = new google.maps.InfoWindow({
-                    content: "<div class='infowin'>" + formattedTime + "<br>" + flg_str + " " + comment_str + "<br>" + result[2].formatted_address + "</div>"
+                    content: "<div class='infowin'>" + formattedTime + "<br>" + flg_str + " " + comment_str + "<br>" + result[0].formatted_address + del_str + "</div>"
                 });
 
                 ifw.open(marker.getMap(), marker);
@@ -179,7 +186,6 @@ function loadNews(){
         })
         // ・ステータスコードは正常で、dataTypeで定義したようにパース出来たとき
         .done(function (response) {
-            console.log(response);
             plotNews(response);
         })
         // ・サーバからステータスコード400以上が返ってきたとき
@@ -284,4 +290,5 @@ $(function () {
     $('[name=water_flg]').change(function() {
         loadData();
     });
+
 });

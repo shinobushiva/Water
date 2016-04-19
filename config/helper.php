@@ -1,5 +1,7 @@
 <?php
 
+define("DELETE_LIMIT",  60 * 5); //削除リミット
+
 /**
  * 安全なJSONにエンコードする
  * @param $data
