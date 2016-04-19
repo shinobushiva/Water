@@ -24,10 +24,38 @@
 Beanstalk  
 64bit Amazon Linux 2016.03 v2.1.0 running PHP 5.6  
 
+## Docker開発環境
+1. docker-engineインストール  
+https://docs.docker.com/engine/installation/
+2. docker-composeインストール  
+https://docs.docker.com/compose/install/
+3. 起動  
+
+```sh
+docker-compose up -d
+```
+
+### 環境情報
+下記の通りローカルに立ち上がる
+- apache + php5.6が `80` ポート
+- MySQLが `3306` ポート
+
+### MySQLのスキーマ準備
+
+```sh
+mysql -h 127.0.0.1 -u root -p
+Enter password: password
+
+mysql> create database water;
+mysql> use water;
+mysql> water.sqlのSQLを実行する
+```
+
 ## 開発メンバー
 菊川 稀玲,
 和泉 信生,
 山ノ内 祥訓,
+星野 雅治,
 新垣 圭祐,
 村上 卓,
 前川 奈々,

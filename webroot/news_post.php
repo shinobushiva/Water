@@ -3,7 +3,7 @@ require_once("../bootstrap.php");
 
 if( isset( $_POST['submit'] ) ){
 
-    $title = h($_POST['title']);
+    $title = $_POST['title'];
     $url = $_POST['url'];
 
     if( IsUrl($url) ) {

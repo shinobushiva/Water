@@ -26,20 +26,12 @@
 <body>
 <?php include_once("analyticstracking.php") ?>
 <div style="margin:15px 0;text-align:center">
-    水道から水が出ていますか？
+    水漏れを報告してください
 </div>
-<form action="<?php print($_SERVER['PHP_SELF']) ?>" method="POST" id="post" onsubmit="return confirm('送信してもいいですか？');">
+<form action="<?php print($_SERVER['PHP_SELF']) ?>" enctype="multipart/form-data" method="POST" id="post" onsubmit="return confirm('送信してもいいですか？');">
     <input type="hidden" id="time" name="time" value="">
     <input type="hidden" name="locate" id="locate" value="">
 
-    <div class="box">
-        <select name="flg" id="flg" onchange="updateValue()">
-            <option value="0" selected>水が出ない</option>
-            <option value="1">水が出る</option>
-            <option value="2">水の提供ができる</option>
-            <option value="3">水出るが飲めない</option>
-        </select>
-    </div>
     <div id='now' class="box">
         <div class="memo-title">
             <a href="javascript:void(0)" onclick="now()">１．位置を設定する</a>
@@ -47,8 +39,15 @@
         <div class="memo">本体の設定から位置情報の利用を許可してください．</div>
     </div>
     <div class="box">
-        <div class="memo-title">２．コメントがあればご記入ください</div>
-        <textarea id="comment" name="comment" value=""></textarea>
+        <div class="memo-title">２．水漏れ箇所の情報を入力する</div>
+        <textarea id="comment" name="comment"></textarea>
+    </div>
+    <div class="box">
+        <div class="memo-title">３．写真があれば添付してください</div>
+        <label class="button-file">
+            <input type="file" class="hide" id="image" name="image" value="">
+            写真を選ぶ
+        </label>
     </div>
     <div class="box-mini">
         <input type="submit" id="js-submit-button" name="submit" value="投稿">
@@ -65,7 +64,7 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript" src="js/post.js"></script>
+<script type="text/javascript" src="js/rousui_post.js"></script>
 
 </body>
 

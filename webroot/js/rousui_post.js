@@ -8,21 +8,27 @@
     document.getElementById('big').addEventListener('click', function () {
         map.setZoom(++map.zoom)
     });
+
+    document.getElementById("image").addEventListener("change", function(e){
+        e.target.nextSibling.nodeValue = e.target.files.length ? e.target.files[0].name : "写真を選ぶ";
+    });
     
 // 前画面で保存したデータを削除
     $('#js-submit-button').click(function (e) {
         setStorage()
     });
-    
-    var markers = ['no', 'ok', 'go'];
-    var marker = 0 ;// Selected marker
+
     if (!navigator.geolocation)
         document.getElementById('now').style.display = 'none';
     var mapDom = document.getElementById('map');
 
     var currentMap; // 前の画面から表示データを取得する
     try {
-        currentMap = JSON.parse(sessionStorage.getItem('google-map-post-location'));
+        if (!!sessionStorage.getItem('google-map-post-location')) {
+            currentMap = JSON.parse(sessionStorage.getItem('google-map-post-location'));
+        } else {
+            currentMap = {};
+        }
     } catch (e) {
         console.error(e);
     }
@@ -48,19 +54,6 @@
 
     var elem = document.getElementById('time');
 
-// Create time now
-//     n    = new Date()
-//
-// // Create time now
-// var month   = n.getMonth() + 1,
-//     hours   = n.getHours(),
-//     day     = n.getDate(),
-//     minutes = n.getMinutes()
-//
-// month   = month.toString().length > 1 ? month : '0' + month
-// hours   = hours.toString().length > 1 ? hours : '0' + hours
-// day     = day.toString().length > 1 ? day : '0' + day
-// minutes = minutes.toString().length > 1 ? minutes : '0' + minutes
     elem.value = ''+ Math.round(Date.now()/1000);//'16' + month + hours + minutes
     console.log(elem.value);
     var nowPosition;
@@ -70,12 +63,10 @@
     function mapClickListener (e) {
         var latlng = e.latLng;
         // Get status
-        marker = Number(document.getElementById('flg').value);
         // console.log( 'set position : ', e )
         if (nowPosition) nowPosition.setMap(null);
         document.getElementById('locate').value = latlng.lat() + ',' + latlng.lng();
-
-        nowPosition = createMapMarker(latlng, map, markers[marker]);
+        nowPosition = createMapMarker(latlng, map, "rousui");
 
         setTimeout(function () {
             alert('間違いがなければ "投稿" ボタンをクリックしてください．');
@@ -91,15 +82,12 @@
                 document.getElementById('locate').value = lat + ',' + lng;
                 var latlng = new google.maps.LatLng(lat, lng);
 
-                marker = Number(document.getElementById('flg').value);
-
                 if (nowPosition) nowPosition.setMap(null);
-                nowPosition = createMapMarker(latlng, map, markers[marker]);
+                nowPosition = createMapMarker(latlng, map, "rousui");
 
                 setTimeout(function () {
                     alert('間違いがなければ "投稿" ボタンをクリックしてください．');
                 }, 100);
-
             },
             function (error) {
                 var errMsg;
@@ -131,12 +119,11 @@
         if (!nowPosition) return;
         var n1 = nowPosition.position.lat();
         var n2 = nowPosition.position.lng();
-        marker = Number(document.getElementById('flg').value);
         nowPosition.setMap(null);
         nowPosition = new google.maps.Marker({
             position: new google.maps.LatLng(n1, n2),
             map: map,
-            icon: markers[marker] + '.png'
+            icon: 'rousui.png'
         });
         return true;
     }

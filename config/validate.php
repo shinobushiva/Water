@@ -9,7 +9,7 @@
  */
 function VerifyFlag($flag) {
     $i = (int)$flag;
-    if( 0 <= $i && $i <= 3 ){
+    if( 0 <= $i && $i <= 4 ){
         return $i;
     }
     return 0;

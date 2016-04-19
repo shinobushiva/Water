@@ -26,13 +26,14 @@
 <body>
 <?php include_once("analyticstracking.php") ?>
 <div id="tools">
-    <div style="margin:15px 0;text-align:center">
-        水道から水が出ていますか？
+    <div class="flex-container select-button-box">
+        <a href="rousui_post.php" id="js-post-button" class="post-button">
+            水漏れがありますか？<br>報告する
+        </a>
+        <a href="post.php" id="js-post-button" class="post-button">
+            水が出ていますか？<br>投稿する
+        </a>
     </div>
-
-    <a href="post.php" id="js-post-button">
-        <div id="postBtn">投稿する</div>
-    </a>
 
     <div class="memo">
         <br>
@@ -40,6 +41,7 @@
         <img src="ok.png"> 水が出る&nbsp;
         <img src="go.png"> 水の提供可能&nbsp;
         <img src="notdrink.png"> 水出るが飲めない&nbsp;&nbsp;&nbsp;
+        <img src="rousui.png"> 水漏れ&nbsp;&nbsp;&nbsp;
         <button id="range-toggle">絞り込み</button>
     </div>
     <div id="filter_options" class="memo" style="display:none">
@@ -48,6 +50,7 @@
             <input name="water_flg" type="checkbox" value="1" checked><img src="ok.png"> 水が出る <span id="ok_count"></span><br />
             <input name="water_flg" type="checkbox" value="2" checked><img src="go.png"> 水の提供可能 <span id="go_count"></span><br />
             <input name="water_flg" type="checkbox" value="3" checked><img src="notdrink.png"> 水出るが飲めない <span id="notdrink_count"></span><br />
+            <input name="water_flg" type="checkbox" value="4" checked><img src="rousui.png"> 水漏れ <span id="rousui_count"></span><br />
         </div>
         <div id="time-range">
             <p>
@@ -61,7 +64,7 @@
 </div>
 
 <!-- View map -->
-<div id="map" data-source='<?php echo $json; ?>'></div>
+<div id="map"></div>
 <!--<div id="customZoomBtn">-->
 <!--    <div id="small" class="float_l btn">ズームアウト</div>-->
 <!--    <div id="big" class="float_l btn">ズームイン</div>-->

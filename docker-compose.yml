@@ -1,0 +1,19 @@
+php56:
+  build: docker-php56
+  net: host
+  volumes:
+    - ./webroot:/var/www/html
+    - ./:/var/www/
+  working_dir: /var/www/html
+  environment:
+    DB_HOST: 127.0.0.1
+    DB_DATABASE: water
+    DB_PORT: 3306
+    DB_USERNAME: root
+    DB_PASSWORD: password
+
+mysql56:
+  image: mysql:5.6
+  net: host
+  environment:
+    MYSQL_ROOT_PASSWORD: password

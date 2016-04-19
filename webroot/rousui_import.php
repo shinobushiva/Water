@@ -1,48 +1,50 @@
 <?php
 require_once("../bootstrap.php");
 
-if( isset( $_POST['submit'] ) ){
-    $err = "";
+$query = 'select * from water_leak';
+$arr = DB::conn()->rows($query, []);
 
-    $time    = time();
-    $flg     = VerifyFlag($_POST['flg']);
-    $locate  = $_POST['locate'];
-    $comment = $_POST['comment'];
-    if (IsLocateString($locate) == false) {
-        $err = "経度緯度情報が不正です";
-    }
 
-    if ($err === "") {
+foreach ($arr as $a) {
 
+    $sql = "INSERT INTO rousui SET time = :time, locate = :locate, comment = :comment, address = :address, flg = :flg";
+
+    if (empty($a["address"])) {
         $query = array(
-            "latlng" => h($locate),
+            "address" => $a["address1"] . $a["address2"] . $a["address3"],
             "language" => "ja",
-            "sensor" => false
         );
         $res = callApi("GET", "https://maps.googleapis.com/maps/api/geocode/json", $query);
 
-        $address= $res["results"][0]["formatted_address"];
+        $address = $res["results"][0]["formatted_address"];
+        $lat = $res["results"][0]["geometry"]["location"]["lat"];
+        $lng = $res["results"][0]["geometry"]["location"]["lng"];
 
-        $sql = "INSERT INTO info SET time = :time, locate = :locate, flg = :flg, comment = :comment, address = :address";
-        $params = ["time"    => $time ,
-            "locate"  => $locate ,
-            "flg"     => (int)$flg ,
-            "comment" => $comment ,
+        $params = [
+            "time" => strtotime($a["date"]),
+            "locate" => $lat . "," . $lat,
             "address" => $address,
+            "flg" => 4,
+            "comment" => $a["note"],
         ];
-
-        DB::conn()->query($sql , $params);
-        header('Location: index.php');
+    } else {
+        $params = [
+            "time" => strtotime($a["date"]),
+            "locate" => $a["latitude"] . "," . $a["longitude"],
+            "address" => $a["address"],
+            "flg" => 4,
+            "comment" => $a["note"],
+        ];
     }
-    echo $err .PHP_EOL;
+    DB::conn()->query($sql , $params);
 }
+
 
 function callApi($method, $url, $data = false)
 {
     $curl = curl_init();
 
-    switch ($method)
-    {
+    switch ($method) {
         case "POST":
             curl_setopt($curl, CURLOPT_POST, 1);
 
@@ -70,5 +72,3 @@ function callApi($method, $url, $data = false)
 
     return json_decode($result, true);
 }
-
-include VIEW_DIR . '/post.php';

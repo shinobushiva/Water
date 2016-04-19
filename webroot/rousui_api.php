@@ -9,35 +9,25 @@ $flgs = explode(",", $_GET["map_flg"]);
 $end = strtotime(date("Y-m-d H:i:s", (int)$end));
 $from_time = strtotime(date("Y-m-d H:i:s", (int)$from_time));
 
-
+$sql = "SELECT * FROM rousui WHERE time > ? AND time < ?";
 $params = [
     $from_time,
     $end
 ];
-$r_rows = [];
-$rows =[];
+
 if (count($flgs) > 0 && ($flgs[0]) != "") {
-
-    // rousui table
-    if(in_array(4, $flgs)){
-        $sql = "SELECT * FROM rousui WHERE time > ? AND time < ?";
-        $r_rows = DB::conn()->rows($sql, $params);
-    }
-
-    // info table
-    $sql = "SELECT * FROM info WHERE time > ? AND time < ?";
     $sql .= " AND flg IN(?)";
     $f = [];
     foreach ($flgs as $flg) {
         $f[] = VerifyFlag($flg);
     }
     $params[] = $f;
-
-    $rows = DB::conn()->rows($sql, $params);
+} else {
+    $sql .= " AND flg NOT IN(0,1,2,3,4)";
 }
 
-$result = array_merge($r_rows, $rows);
+$rows = DB::conn()->rows($sql, $params);
 
-$json = json_safe_encode($result);
+$json = json_safe_encode($rows);
 
 echo $json;

@@ -5,7 +5,6 @@ if( isset( $_POST['submit'] ) ){
     $err = "";
 
     $time    = time();
-    $flg     = VerifyFlag($_POST['flg']);
     $locate  = $_POST['locate'];
     $comment = $_POST['comment'];
     if (IsLocateString($locate) == false) {
@@ -13,6 +12,20 @@ if( isset( $_POST['submit'] ) ){
     }
 
     if ($err === "") {
+        $image_url = "";
+        if(isset($_FILES["image"])) {
+            // アップロード処理
+            $file = $_FILES["image"];
+
+            if (!is_uploaded_file($file["tmp_name"])) {
+                die('ファイルがアップロードされていません');
+            }
+            $result = s3Upload($file, '');
+            
+            if($result){
+                $image_url = $result['ObjectURL'];
+            }
+        }
 
         $query = array(
             "latlng" => h($locate),
@@ -23,12 +36,13 @@ if( isset( $_POST['submit'] ) ){
 
         $address= $res["results"][0]["formatted_address"];
 
-        $sql = "INSERT INTO info SET time = :time, locate = :locate, flg = :flg, comment = :comment, address = :address";
+        $sql = "INSERT INTO rousui SET time = :time, locate = :locate, comment = :comment, image_url = :image_url, address = :address, flg = :flg";
         $params = ["time"    => $time ,
             "locate"  => $locate ,
-            "flg"     => (int)$flg ,
             "comment" => $comment ,
+            "image_url" => $image_url,
             "address" => $address,
+            "flg" => 4,
         ];
 
         DB::conn()->query($sql , $params);
@@ -71,4 +85,4 @@ function callApi($method, $url, $data = false)
     return json_decode($result, true);
 }
 
-include VIEW_DIR . '/post.php';
+include VIEW_DIR . '/rousui_post.php';

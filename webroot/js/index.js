@@ -1,11 +1,8 @@
-var data_source = $('#map').attr('data-source');
-var position = JSON.parse(data_source);
-
 var gmarkers = [];
 var infoWindows = [];
 
 var tools_height = document.getElementById('tools').clientHeight;
-function attachMessage(marker, post_time, flg, comment) {
+function attachMessage(marker, post_time, flg, comment, rousui_image_url) {
     google.maps.event.addListener(marker, 'click', function (event) {
 
         var t = new Date(post_time * 1000);
@@ -31,6 +28,8 @@ function attachMessage(marker, post_time, flg, comment) {
             flg_str = '<img src="go.png" > 水の提供可能';
         } else if (flg == "notdrink") {
             flg_str = '<img src="notdrink.png" > 水出るが飲めない';
+        } else if (flg == "rousui") {
+            flg_str = '<img src="rousui.png" > 水漏れ';
         }
 
         var comment_str = "";
@@ -46,6 +45,13 @@ function attachMessage(marker, post_time, flg, comment) {
             del_str = "<br><br>" + "<a href='' onclick='document.del.submit();return false;'>この情報を削除する</a>" + "<form name='del' method='POST' action='delete.php'>" + "<input type=hidden name='post_time' value='" + post_time +"'> ";
         }
 
+
+        var rousui_img = "";
+        // 漏水の画像があるなら表示
+        if(flg == "rousui" && rousui_image_url !== "" && rousui_image_url !== null && rousui_image_url != "undefined"){
+            rousui_img = "<br>" + "<img src='" + rousui_image_url + "' width='200' alt='' >";
+        }
+
         new google.maps.Geocoder().geocode({
             latLng: marker.getPosition()
         }, function (result, status) {
@@ -54,7 +60,7 @@ function attachMessage(marker, post_time, flg, comment) {
                 closeAllInfoWindows();
 
                 var ifw = new google.maps.InfoWindow({
-                    content: "<div class='infowin'>" + formattedTime + "<br>" + flg_str + " " + comment_str + "<br>" + result[0].formatted_address + del_str + "</div>"
+                    content: "<div class='infowin'>" + formattedTime + "<br>" + flg_str + " " + comment_str + "<br>" + result[0].formatted_address + del_str + rousui_img + "</div>"
                 });
 
                 ifw.open(marker.getMap(), marker);
@@ -91,7 +97,7 @@ function plotNews(t_news) {
 }
 function plotData(t_position) {
     // index 3 (marker 3) not exist
-    var markers = ['no', 'ok', 'go', 'notdrink'];
+    var markers = ['no', 'ok', 'go', 'notdrink', 'rousui'];
 
     var m = document.getElementById('map');
     window.DEFAULT_LAT = 32.7858659;
@@ -147,11 +153,12 @@ function plotData(t_position) {
     removeMarkers();
 
     var data;
-    var no_count = 0, ok_count = 0, go_count = 0, notdrink_count = 0;
+    var no_count = 0, ok_count = 0, go_count = 0, notdrink_count = 0, rousui_count = 0;
     for (var i = 0; i < t_position.length; i++) {
         data = t_position[i]['locate'].split(/,/)
         post_time = t_position[i]['time'];
         comment = t_position[i]['comment'];
+        rousui_image_url = t_position[i]['image_url'];
 
         if (t_position[i]['flg'] == 0) {
             no_count++;
@@ -161,6 +168,8 @@ function plotData(t_position) {
             go_count++;
         } else if (t_position[i]['flg'] == 3) {
             notdrink_count++;
+        } else if (t_position[i]['flg'] == 4) {
+            rousui_count++;
         }
 
         var myMarker = new google.maps.Marker({
@@ -169,12 +178,13 @@ function plotData(t_position) {
             icon: markers[t_position[i].flg] + '.png'
         });
         gmarkers.push(myMarker);
-        attachMessage(myMarker, post_time, markers[t_position[i].flg], comment);
+        attachMessage(myMarker, post_time, markers[t_position[i].flg], comment, rousui_image_url);
     }
     $("#no_count").text("(" + no_count + ")");
     $("#ok_count").text("(" + ok_count + ")");
     $("#go_count").text("(" + go_count + ")");
     $("#notdrink_count").text("(" + notdrink_count + ")");
+    $("#rousui_count").text("(" + rousui_count + ")");
 }
 
 function loadNews(){
@@ -281,8 +291,6 @@ $(function () {
     });
     $("#amount").val((formatDate(new Date($("#slider-range").slider("values", 0) * 1000), "MM月DD日hh時mm分")) +
         " - " + (formatDate(new Date($("#slider-range").slider("values", 1) * 1000), "MM月DD日hh時mm分")));
-
-    plotData(position);
 
     loadData(default_begin);
     loadNews();

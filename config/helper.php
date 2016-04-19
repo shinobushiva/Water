@@ -2,6 +2,53 @@
 
 define("DELETE_LIMIT",  60 * 5); //削除リミット
 
+
+use Aws\S3\S3Client;
+
+// 拡張子を取得する
+function extension($filename) {
+    $str = strrchr($filename, '.');
+    if ($str === FALSE) {
+        return NULL;
+    } else {
+        return substr($str, 1);
+    }
+}
+
+function s3Upload($file, $s3Dir) {
+
+
+    $ext = extension($file['name']);
+    $srcPath = $file['tmp_name'];
+
+    $timestamp = uniqid();
+    $name = $timestamp . "_file." . $ext;
+
+    $s3 = S3Client::factory(
+        array(
+            'key'    => getenv('AWS_BUCKET_KEY'),// 取得したAccess Key IDを使用
+            'secret' => getenv('AWS_BUCKET_SECRET'),// 取得した Secret Access Keyを使用
+            'region' => getenv('AWS_BUCKET_REGION'),
+            'version' => getenv('AWS_BUCKET_VERSION'),
+        )
+    );
+
+    try {
+        // Upload a file.
+        $result = $s3->putObject(array(
+            'Bucket'       => getenv('AWS_BUCKET_NAME'),
+            'Key'        => $name,
+            'SourceFile' => $srcPath,
+            'ACL'          => 'public-read',
+        ));
+
+        return $result;
+    }catch (RuntimeException $e){
+        return false;
+    }
+
+}
+
 /**
  * 安全なJSONにエンコードする
  * @param $data
