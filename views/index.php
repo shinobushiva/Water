@@ -40,7 +40,7 @@
         <img src="no.png"> 水が出ない&nbsp;
         <img src="ok.png"> 水が出る&nbsp;
         <img src="go.png"> 水の提供可能&nbsp;
-        <img src="notdrink.png"> 水出るが飲めない&nbsp;&nbsp;&nbsp;
+        <img src="notdrink.png"> 水出るが飲めない&nbsp;
         <img src="rousui.png"> 水漏れ&nbsp;&nbsp;&nbsp;
         <button id="range-toggle">絞り込み</button>
     </div>
