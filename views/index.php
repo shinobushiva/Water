@@ -39,7 +39,7 @@
         <img src="no.png"> 水が出ない&nbsp;
         <img src="ok.png"> 水が出る&nbsp;
         <img src="go.png"> 水の提供可能&nbsp;
-        <img src="notdrink.png"> 飲水不可&nbsp;&nbsp;&nbsp;
+        <img src="notdrink.png"> 水出るが飲めない&nbsp;&nbsp;&nbsp;
         <button id="range-toggle">絞り込み</button>
     </div>
     <div id="filter_options" class="memo" style="display:none">
@@ -47,7 +47,7 @@
             <input name="water_flg" type="checkbox" value="0" checked><img src="no.png"> 水が出ない <span id="no_count"></span><br />
             <input name="water_flg" type="checkbox" value="1" checked><img src="ok.png"> 水が出る <span id="ok_count"></span><br />
             <input name="water_flg" type="checkbox" value="2" checked><img src="go.png"> 水の提供可能 <span id="go_count"></span><br />
-            <input name="water_flg" type="checkbox" value="3" checked><img src="notdrink.png"> 飲水不可 <span id="notdrink_count"></span><br />
+            <input name="water_flg" type="checkbox" value="3" checked><img src="notdrink.png"> 水出るが飲めない <span id="notdrink_count"></span><br />
         </div>
         <div id="time-range">
             <p>

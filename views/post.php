@@ -22,7 +22,7 @@
             <option value="0" selected>水が出ない</option>
             <option value="1">水が出る</option>
             <option value="2">水の提供ができる</option>
-            <option value="3">飲水不可</option>
+            <option value="3">水出るが飲めない</option>
         </select>
     </div>
     <div id='now' class="box">

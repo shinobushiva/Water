@@ -30,7 +30,7 @@ function attachMessage(marker, post_time, flg, comment) {
         } else if (flg == "go") {
             flg_str = '<img src="go.png" > 水の提供可能';
         } else if (flg == "notdrink") {
-            flg_str = '<img src="notdrink.png" > 飲水不可';
+            flg_str = '<img src="notdrink.png" > 水出るが飲めない';
         }
 
         var comment_str = "";

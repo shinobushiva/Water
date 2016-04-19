@@ -49,7 +49,7 @@
             } elseif ($a["flg"] == 2) {
                 $flg_str = '<img src="go.png" > 水の提供可能';
             } elseif ($a["flg"] == 3) {
-                $flg_str = '<img src="notdrink.png" > 飲水不可';
+                $flg_str = '<img src="notdrink.png" > 水出るが飲めない';
             }
 
             if($a["comment"] == "null"){
