@@ -169,27 +169,6 @@ function plotData(t_position) {
     $("#go_count").text("(" + go_count + ")");
     $("#notdrink_count").text("(" + notdrink_count + ")");
 }
-// DOMを全て読み込んだあとに実行される
-$(function () {
-
-    plotData(position);
-
-
-    // var map_flg;
-    // $('[name=water_flg]').change(function() {
-    //     map_flg = $('[name="water_flg"]:checked').map(function(){
-    //         return 'map_flg[]=' + $(this).val()
-    //     }).get().join('&');
-    // });
-
-    loadData();
-    loadNews();
-
-    $('[name=water_flg]').change(function() {
-        loadData();
-    });
-});
-
 
 function loadNews(){
 
@@ -210,8 +189,12 @@ function loadNews(){
         });
 }
 
-function loadData(){
+function loadData(start){
 
+    var end = $('#end').val();
+    if(!start){
+        start = $('#start').val();
+    }
     var map_flg;
     map_flg = $('[name="water_flg"]:checked').map(function(){
         return $(this).val()
@@ -222,8 +205,8 @@ function loadData(){
             type: 'get', // getかpostを指定(デフォルトは前者)
             dataType: 'json', // 「json」を指定するとresponseがJSONとしてパースされたオブジェクトになる
             data: { // 送信データを指定(getの場合は自動的にurlの後ろにクエリとして付加される)
-                map_start: $('#start').val(),
-                map_end: $('#end').val(),
+                map_start: start,
+                map_end: end,
                 map_flg: map_flg
             }
         })
@@ -245,3 +228,60 @@ function removeMarkers(){
         gmarkers[i].setMap(null);
     }
 }
+
+/**
+ * 日付をフォーマットする
+ * @param  {Date}   date     日付
+ * @param  {String} [format] フォーマット
+ * @return {String}          フォーマット済み日付
+ */
+var formatDate = function (date, format) {
+    if (!format) format = 'YYYY-MM-DD hh:mm:ss.SSS';
+    format = format.replace(/YYYY/g, date.getFullYear());
+    format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
+    format = format.replace(/DD/g, ('0' + date.getDate()).slice(-2));
+    format = format.replace(/hh/g, ('0' + date.getHours()).slice(-2));
+    format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
+    format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));
+    if (format.match(/S/g)) {
+        var milliSeconds = ('00' + date.getMilliseconds()).slice(-3);
+        var length = format.match(/S/g).length;
+        for (var i = 0; i < length; i++) format = format.replace(/S/, milliSeconds.substring(i, i + 1));
+    }
+    return format;
+};
+
+// DOMを全て読み込んだあとに実行される
+$(function () {
+
+    var from_time = parseInt($("#start").val(), 10);
+    var now = parseInt($("#end").val(), 10);
+    var default_begin = now - 60 * 60 * 6;
+
+    $("#slider-range").slider({
+        range: true,
+        min: from_time,
+        max: now,
+        step: 1800,
+        values: [default_begin, now],
+        slide: function (event, ui) {
+            $("#start").val(ui.values[0]);
+            $("#end").val(ui.values[1]);
+            $("#amount").val(formatDate(new Date(ui.values[0] * 1000), "MM月DD日hh時mm分") + " - " + formatDate(new Date(ui.values[1] * 1000), "MM月DD日hh時mm分"));
+        },
+        stop: function( event, ui ) {
+            loadData();
+        }
+    });
+    $("#amount").val((formatDate(new Date($("#slider-range").slider("values", 0) * 1000), "MM月DD日hh時mm分")) +
+        " - " + (formatDate(new Date($("#slider-range").slider("values", 1) * 1000), "MM月DD日hh時mm分")));
+
+    plotData(position);
+
+    loadData(default_begin);
+    loadNews();
+
+    $('[name=water_flg]').change(function() {
+        loadData();
+    });
+});
