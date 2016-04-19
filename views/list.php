@@ -40,7 +40,10 @@
         </thead>
         <tbody>
         <?php
+        $i = 0;
         foreach($arr as $a){
+
+            $i++;
             $flg_str = "";
             if ($a["flg"] == 0) {
                 $flg_str = '<img src="no.png" > 水が出ない';
@@ -50,19 +53,26 @@
                 $flg_str = '<img src="go.png" > 水の提供可能';
             } elseif ($a["flg"] == 3) {
                 $flg_str = '<img src="notdrink.png" > 水出るが飲めない';
+            } elseif ($a["flg"] == 4) {
+                $flg_str = '<img src="rousui.png" > 水漏れ';
             }
 
             if($a["comment"] == "null"){
                 $a["comment"] = "";
             }
 
+            $image_str = "";
+            if(isset($a["image_url"])){
+                $image_str = "<br>" . "<img src='" . $a["image_url"] . "' width='100' alt='' >";
+            }
+
             echo "<tr>";
-            echo "<td>" . $a["Id"] . "</td>";
+            echo "<td>" . $i . "</td>";
             echo "<td>" . date("Y/m/d H:i:s", $a["time"]) . "</td>";
             echo "<td>" . h($a["locate"]) . "</td>";
             echo "<td>" . h($a["address"]) . "</td>";
             echo "<td>" . $flg_str . "</td>";
-            echo "<td>" . h($a["comment"]) . "</td>";
+            echo "<td>" . h($a["comment"]) . $image_str . "</td>";
             echo "</tr>";
         }
         ?>
