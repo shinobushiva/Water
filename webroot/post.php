@@ -71,4 +71,7 @@ function callApi($method, $url, $data = false)
     return json_decode($result, true);
 }
 
-include VIEW_DIR . '/post.php';
+$template = Template::factory();
+echo $template->render('post.html', array(
+    'php_self' => $_SERVER['PHP_SELF'],
+));

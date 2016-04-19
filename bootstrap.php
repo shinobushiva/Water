@@ -18,8 +18,7 @@ define("WEB_ROOT", APP_ROOT . "/webroot");
 require_once (CONFIG_DIR . "/env.php");
 require_once (VENDOR_DIR. "/SimpleDBI/SimpleDBI.php");
 require_once (CONFIG_DIR . "/db.php");
+require_once (CONFIG_DIR . "/template.php");
 require_once (CONFIG_DIR . "/validate.php");
 require_once (CONFIG_DIR . "/helper.php");
 require_once (VENDOR_DIR . '/autoload.php');
-
-

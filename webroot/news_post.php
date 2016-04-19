@@ -27,4 +27,7 @@ if( isset( $_POST['submit'] ) ){
     echo $err .PHP_EOL;
 }
 
-include VIEW_DIR . '/news_post.php';
+$template = Template::factory();
+echo $template->render('news_post.html', array(
+    'php_self' => $_SERVER['PHP_SELF'],
+));

@@ -39,7 +39,10 @@ if($now < ($post_time + DELETE_LIMIT)){
 }
 
 if (isset($json_size) && $json_size > 2) {
-    include VIEW_DIR . '/delete.php';
+    $template = Template::factory();
+    echo $template->render('delete.html', array(
+        'post_time' => $post_time,
+    ));
 } else {
     echo "この情報は削除されました、または不正なリクエストです";
 }

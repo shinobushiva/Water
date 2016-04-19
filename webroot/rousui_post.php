@@ -85,4 +85,7 @@ function callApi($method, $url, $data = false)
     return json_decode($result, true);
 }
 
-include VIEW_DIR . '/rousui_post.php';
+$template = Template::factory();
+echo $template->render('rousui_post.html', array(
+    'php_self' => $_SERVER['PHP_SELF'],
+));
