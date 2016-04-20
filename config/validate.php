@@ -40,3 +40,20 @@ function IsLocateString($locate) {
 function IsUrl($url) {
     return filter_var($url, FILTER_VALIDATE_URL) !== false;
 }
+
+/**
+ * 画像かどうかチェックする
+ * @param file
+ *
+ * @return boolean
+ */
+function IsImage($file) {
+    if (preg_match("/.*\.(jpe?g|gif|png)$/", strtolower($file['name'])) !== 1) {
+        return false;
+    }
+    $type = @exif_imagetype($file['tmp_name']);
+    if (!in_array($type, [IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG], true)) {
+        return false;
+    }
+    return true;
+}

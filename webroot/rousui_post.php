@@ -20,33 +20,41 @@ if( isset( $_POST['submit'] ) ){
             if (!is_uploaded_file($file["tmp_name"])) {
                 die('ファイルがアップロードされていません');
             }
+
+            if (!IsImage($file)) {
+                die('画像はJPEG(jpg,jpeg)、GIF(gif)、PNG(png)のいずれかとなっております。');
+            }
+
             $result = s3Upload($file, '');
-            
+
             if($result){
                 $image_url = $result['ObjectURL'];
             }
         }
 
-        $query = array(
-            "latlng" => h($locate),
-            "language" => "ja",
-            "sensor" => false
-        );
-        $res = callApi("GET", "https://maps.googleapis.com/maps/api/geocode/json", $query);
+        if ($image_url !== "") {
 
-        $address= $res["results"][0]["formatted_address"];
+            $query = array(
+                "latlng" => h($locate),
+                "language" => "ja",
+                "sensor" => false
+            );
+            $res = callApi("GET", "https://maps.googleapis.com/maps/api/geocode/json", $query);
 
-        $sql = "INSERT INTO rousui SET time = :time, locate = :locate, comment = :comment, image_url = :image_url, address = :address, flg = :flg";
-        $params = ["time"    => $time ,
-            "locate"  => $locate ,
-            "comment" => $comment ,
-            "image_url" => $image_url,
-            "address" => $address,
-            "flg" => 4,
-        ];
+            $address= $res["results"][0]["formatted_address"];
 
-        DB::conn()->query($sql , $params);
-        header('Location: index.php');
+            $sql = "INSERT INTO rousui SET time = :time, locate = :locate, comment = :comment, image_url = :image_url, address = :address, flg = :flg";
+            $params = ["time"    => $time ,
+                "locate"  => $locate ,
+                "comment" => $comment ,
+                "image_url" => $image_url,
+                "address" => $address,
+                "flg" => 4,
+            ];
+
+            DB::conn()->query($sql , $params);
+            header('Location: index.php');
+        }
     }
     echo $err .PHP_EOL;
 }
