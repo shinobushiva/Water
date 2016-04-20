@@ -2,7 +2,7 @@ var gmarkers = [];
 var infoWindows = [];
 
 var tools_height = document.getElementById('tools').clientHeight;
-function attachMessage(marker, post_time, flg, comment, rousui_image_url) {
+function attachMessage(marker, post_time, flg, comment, rousui_image_url, rousui_status) {
     google.maps.event.addListener(marker, 'click', function (event) {
 
         var t = new Date(post_time * 1000);
@@ -28,6 +28,8 @@ function attachMessage(marker, post_time, flg, comment, rousui_image_url) {
             flg_str = '<img src="go.png" > 水の提供可能';
         } else if (flg == "notdrink") {
             flg_str = '<img src="notdrink.png" > 水出るが飲めない';
+        } else if (flg == "rousui" && rousui_status == 1) {
+            flg_str = '<img src="resolve.png" > 解決済み';
         } else if (flg == "rousui") {
             flg_str = '<img src="rousui.png" > 水漏れ';
         }
@@ -38,18 +40,23 @@ function attachMessage(marker, post_time, flg, comment, rousui_image_url) {
             comment_str = comment;
         }
 
-        var now = new Date();
-        var del_str = "";
-        //5分以内なら削除可能
-        if(parseInt(now.getTime() / 1000) < (parseInt(post_time) + (60 * 5))){
-            del_str = "<br><br>" + "<a href='' onclick='document.del.submit();return false;'>この情報を削除する</a>" + "<form name='del' method='POST' action='delete.php'>" + "<input type=hidden name='post_time' value='" + post_time +"'> ";
+        var resolve_str = "";
+        // 漏水の画像があるなら表示
+        if(flg == "rousui" && rousui_status != 1){
+            resolve_str = "<br>" + "<a href='' onclick='document.resolve.submit();return false;'>解決済みにする</a>" + "<form name='resolve' method='POST' action='resolve.php'>" + "<input type=hidden name='post_time' value='" + post_time +"'> ";
         }
-
 
         var rousui_img = "";
         // 漏水の画像があるなら表示
         if(flg == "rousui" && rousui_image_url !== "" && rousui_image_url !== null && rousui_image_url != "undefined"){
             rousui_img = "<br>" + "<a href='" + rousui_image_url + "' target='_blank'><img src='" + rousui_image_url + "' width='200' alt='' ></a>";
+        }
+
+        var now = new Date();
+        var del_str = "";
+        //5分以内なら削除可能
+        if(flg != "rousui" && parseInt(now.getTime() / 1000) < (parseInt(post_time) + (60 * 5))){
+            del_str = "<br><br>" + "<a href='' onclick='document.del.submit();return false;'>この情報を削除する</a>" + "<form name='del' method='POST' action='delete.php'>" + "<input type=hidden name='post_time' value='" + post_time +"'> ";
         }
 
         new google.maps.Geocoder().geocode({
@@ -60,7 +67,7 @@ function attachMessage(marker, post_time, flg, comment, rousui_image_url) {
                 closeAllInfoWindows();
 
                 var ifw = new google.maps.InfoWindow({
-                    content: "<div class='infowin'>" + formattedTime + "<br>" + flg_str + " " + comment_str + "<br>" + result[0].formatted_address + del_str + rousui_img + "</div>"
+                    content: "<div class='infowin'>" + formattedTime + "<br>" + flg_str + " " + comment_str + "<br>" + result[0].formatted_address + resolve_str + rousui_img + del_str + "</div>"
                 });
 
                 ifw.open(marker.getMap(), marker);
@@ -159,6 +166,7 @@ function plotData(t_position) {
         post_time = t_position[i]['time'];
         comment = t_position[i]['comment'];
         rousui_image_url = t_position[i]['image_url'];
+        rousui_status = t_position[i]['status'];
 
         if (t_position[i]['flg'] == 0) {
             no_count++;
@@ -172,13 +180,19 @@ function plotData(t_position) {
             rousui_count++;
         }
 
+        var icon = markers[t_position[i].flg];
+
+        if(t_position[i]['flg'] == 4 && rousui_status == 1){
+            icon = "resolve";
+        }
+
         var myMarker = new google.maps.Marker({
             position: new google.maps.LatLng(data[0], data[1]),
             map: map,
-            icon: markers[t_position[i].flg] + '.png'
+            icon: icon + '.png'
         });
         gmarkers.push(myMarker);
-        attachMessage(myMarker, post_time, markers[t_position[i].flg], comment, rousui_image_url);
+        attachMessage(myMarker, post_time, markers[t_position[i].flg], comment, rousui_image_url, rousui_status);
     }
     $("#no_count").text("(" + no_count + ")");
     $("#ok_count").text("(" + ok_count + ")");
@@ -294,6 +308,8 @@ $(function () {
 
     loadData(default_begin);
     loadNews();
+
+    $("#start").val(default_begin);
 
     $('[name=water_flg]').change(function() {
         loadData();

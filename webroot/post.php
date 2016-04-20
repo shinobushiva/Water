@@ -6,8 +6,8 @@ if( isset( $_POST['submit'] ) ){
 
     $time    = time();
     $flg     = VerifyFlag($_POST['flg']);
-    $locate  = $_POST['locate'];
-    $comment = $_POST['comment'];
+    $locate  = (string)$_POST['locate'];
+    $comment = (string)$_POST['comment'];
     if (IsLocateString($locate) == false) {
         $err = "経度緯度情報が不正です";
     }
@@ -35,40 +35,6 @@ if( isset( $_POST['submit'] ) ){
         header('Location: index.php');
     }
     echo $err .PHP_EOL;
-}
-
-function callApi($method, $url, $data = false)
-{
-    $curl = curl_init();
-
-    switch ($method)
-    {
-        case "POST":
-            curl_setopt($curl, CURLOPT_POST, 1);
-
-            if ($data)
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            break;
-        case "PUT":
-            curl_setopt($curl, CURLOPT_PUT, 1);
-            break;
-        default:
-            if ($data)
-                $url = sprintf("%s?%s", $url, http_build_query($data));
-    }
-
-    // Optional Authentication:
-    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($curl, CURLOPT_USERPWD, "username:password");
-
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-    $result = curl_exec($curl);
-
-    curl_close($curl);
-
-    return json_decode($result, true);
 }
 
 $template = Template::factory();

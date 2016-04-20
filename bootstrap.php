@@ -12,6 +12,7 @@ define("CONFIG_DIR", APP_ROOT . "/config");
 define("VENDOR_DIR", APP_ROOT . "/vendor");
 define("VIEW_DIR", APP_ROOT . "/views");
 define("AUTH_DIR", APP_ROOT . "/auth");
+define("TMP_DIR", APP_ROOT . "/tmp");
 define("WEB_ROOT", APP_ROOT . "/webroot");
 
 // required
@@ -20,5 +21,6 @@ require_once (VENDOR_DIR. "/SimpleDBI/SimpleDBI.php");
 require_once (CONFIG_DIR . "/db.php");
 require_once (CONFIG_DIR . "/template.php");
 require_once (CONFIG_DIR . "/validate.php");
+require_once (CONFIG_DIR . "/files.php");
 require_once (CONFIG_DIR . "/helper.php");
 require_once (VENDOR_DIR . '/autoload.php');

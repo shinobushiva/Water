@@ -1,12 +1,11 @@
 <?php
 require_once("../bootstrap.php");
-
 if( isset( $_POST['submit'] ) ){
     $err = "";
 
     $time    = time();
-    $locate  = $_POST['locate'];
-    $comment = $_POST['comment'];
+    $locate  = (string)$_POST['locate'];
+    $comment = (string)$_POST['comment'];
     if (IsLocateString($locate) == false) {
         $err = "経度緯度情報が不正です";
     }
@@ -24,8 +23,15 @@ if( isset( $_POST['submit'] ) ){
             if (!IsImage($file)) {
                 die('画像はJPEG(jpg,jpeg)、GIF(gif)、PNG(png)のいずれかとなっております。');
             }
+            $savePath = safeImage($file["tmp_name"], TMP_DIR);
+            if ( $savePath === "" ){
+                die("不正な画像がuploadされました");
+            }
 
-            $result = s3Upload($file, '');
+            $result = s3Upload($savePath, '');
+
+            // 書きだした画像を削除
+            @unlink($savePath);
 
             if($result){
                 $image_url = $result['ObjectURL'];
@@ -59,39 +65,6 @@ if( isset( $_POST['submit'] ) ){
     echo $err .PHP_EOL;
 }
 
-function callApi($method, $url, $data = false)
-{
-    $curl = curl_init();
-
-    switch ($method)
-    {
-        case "POST":
-            curl_setopt($curl, CURLOPT_POST, 1);
-
-            if ($data)
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            break;
-        case "PUT":
-            curl_setopt($curl, CURLOPT_PUT, 1);
-            break;
-        default:
-            if ($data)
-                $url = sprintf("%s?%s", $url, http_build_query($data));
-    }
-
-    // Optional Authentication:
-    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($curl, CURLOPT_USERPWD, "username:password");
-
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-    $result = curl_exec($curl);
-
-    curl_close($curl);
-
-    return json_decode($result, true);
-}
 
 $template = Template::factory();
 echo $template->render('rousui_post.html', array(

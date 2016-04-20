@@ -37,5 +37,6 @@ CREATE TABLE `rousui` (
   `flg` int(1) DEFAULT NULL,
   `comment` text,
   `address` text,
+  `status` int(1) DEFAULT '0',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

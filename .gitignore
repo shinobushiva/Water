@@ -8,3 +8,4 @@
 .env
 
 /html
+tmp/*
