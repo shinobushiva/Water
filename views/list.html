@@ -27,7 +27,7 @@
 <body>
 {% include "analyticstracking.html" %}
 <div class="container">
-    <table id="info_list">
+    <table id="info_list"  width="100%">
         <thead>
         <tr>
             <th>#</th>
@@ -75,7 +75,8 @@
             buttons: [
                 'copy', 'csv', 'excel', 'print'
             ],
-            pageLength: 20
+            pageLength: 20,
+            responsive: true
         } );
     } );
 </script>

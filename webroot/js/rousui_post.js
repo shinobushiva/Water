@@ -102,6 +102,9 @@
                         errMsg = "タイムアウトしました．";
                         break;
                 }
+                if (navigator.userAgent.match(/FBAN/)) {
+                    errMsg = "Facebookアプリでは位置情報が取得できませんので、タイムラインのリンクを長押しし外部のブラウザで起動して下さい。";
+                }
                 alert("位置情報の取得に失敗しました．" + errMsg);
             }
         )
