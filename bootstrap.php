@@ -20,7 +20,15 @@ require_once (CONFIG_DIR . "/env.php");
 require_once (VENDOR_DIR. "/SimpleDBI/SimpleDBI.php");
 require_once (CONFIG_DIR . "/db.php");
 require_once (CONFIG_DIR . "/template.php");
+require_once (CONFIG_DIR . "/session.php");
 require_once (CONFIG_DIR . "/validate.php");
 require_once (CONFIG_DIR . "/files.php");
 require_once (CONFIG_DIR . "/helper.php");
 require_once (VENDOR_DIR . '/autoload.php');
+
+SessionManager::configure(new MemcachedSessionSetting(array(
+    'save_path' => getenv('SESSION_SAVE_PATH'),
+    'maxlifetime' => getenv('SESSION_LIFETIME'),
+)));
+
+SessionManager::start();

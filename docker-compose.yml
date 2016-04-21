@@ -11,9 +11,15 @@ php56:
     DB_PORT: 3306
     DB_USERNAME: root
     DB_PASSWORD: password
+    SESSION_SAVE_PATH: 127.0.0.1:11211
+    SESSION_LIFETIME: 3600
 
 mysql56:
   image: mysql:5.6
   net: host
   environment:
     MYSQL_ROOT_PASSWORD: password
+
+memcached:
+  image: memcached:1.4
+  net: host

@@ -39,6 +39,7 @@ docker-compose up -d
 下記の通りローカルに立ち上がる
 - apache + php5.6が `80` ポート
 - MySQLが `3306` ポート
+- Memcachedが `11211` ポート
 
 ### MySQLのスキーマ準備
 
