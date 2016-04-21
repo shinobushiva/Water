@@ -20,18 +20,16 @@
         document.getElementById('now').style.display = 'none';
     var mapDom = document.getElementById('map');
 
-    var currentMap; // 前の画面から表示データを取得する
-    try {
-        currentMap = JSON.parse(sessionStorage.getItem('google-map-post-location'));
-    } catch (e) {
-        console.error(e);
-    }
+    var data   = JSON.parse( sessionStorage.getItem( 'google-map-post-location' ) ),
+        center = new google.maps.LatLng(data ? data.lat : 32.7858659, data ? data.lng : 130.7633434 ),
+        zoom   = data ? data.zoom : 9
 
     var map = new google.maps.Map(mapDom, {
-        center: new google.maps.LatLng(currentMap.lat || 32.7858659, currentMap.lng || 130.7633434),
-        zoom: currentMap.zoom || 9,
+        center: center,
+        zoom: zoom,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
+    
     mapDom.style.width = window.innerWidth + 'px';
     mapDom.style.height = window.innerHeight - (document.getElementById('post').clientHeight) - 80 + 'px';
 

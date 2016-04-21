@@ -142,10 +142,13 @@ function plotData(t_position) {
         setStorage()
     });
 
-    $('#js-post-button').click(function (event) {
-        setStorage()
-        console.log('google-map-post-location', sessionStorage.getItem('google-map-post-location'));
-    });
+    var setStorageDom = document.getElementsByClassName( 'post-button' )
+    for( var i=0; i<setStorageDom.length; i++ ){
+        setStorageDom[i].addEventListener( 'click', function(){
+            setStorage()
+            console.log('google-map-post-location', sessionStorage.getItem('google-map-post-location'));
+        } )
+    }
 
     // document.getElementById('small').addEventListener('click', function () {
     //     if (map.zoom > 0) map.setZoom(--map.zoom)
