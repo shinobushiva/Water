@@ -43,3 +43,6 @@ CREATE TABLE `rousui` (
   `status` int(1) DEFAULT '0',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `info` ADD INDEX idx_time (`time`);
+ALTER TABLE `rousui` ADD INDEX idx_time (`time`);
