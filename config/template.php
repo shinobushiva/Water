@@ -16,12 +16,20 @@ abstract class BaseTemplate
  */
 class TwigTemplate extends BaseTemplate
 {
-    public function __construct()
+    /**
+     * コンストラクタ
+     * @param Twig_SimpleFunction[] $functions
+     */
+    public function __construct(array $functions = [])
     {
         $this->template = new Twig_Environment(
             new Twig_Loader_Filesystem(VIEW_DIR),
             array('autoescape' => true)
         );
+
+        foreach($functions as $func) {
+            $this->template->addFunction($func);
+        }
     }
 
     public function render($template, $args)
@@ -45,7 +53,9 @@ class Template
     public static function factory()
     {
         if (is_null(self::$instance)) {
-            self::$instance = new TwigTemplate();
+            self::$instance = new TwigTemplate([
+                new Twig_SimpleFunction('csrfToken', 'csrfToken')
+            ]);
         }
         return self::$instance;
     }

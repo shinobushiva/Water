@@ -19,38 +19,29 @@ function safeImage($orgFilePath, $exportFilePath) {
         return "";
     }
     list($w, $h, $type) = $size;
+    list($width, $height) = getSaveFileSize($w, $h);
+
+    // 1回最初にリサイズする
+    $res = new \Imagick($orgFilePath);
+    if (!$res->thumbnailImage($width, $height, true, true)) {
+        // リサイズ失敗
+        return "";
+    }
+
     if ($type == IMG_JPEG) {
-        // JPEG の場合は一度pngへ変換します。
-        $jpg = imagecreatefromjpeg($orgFilePath);
-        if (!imagepng($jpg, $outputFilePath . ".png")) {
-            // pngに出来なかった
+        // 一度pngにする
+        if (!$res->setImageFormat('png')) {
+            // 1回PNGに出来なかった
             return "";
         }
-        $res = imagecreatefrompng($outputFilePath . ".png");
-        // リソース取得したので、png画像は削除
-        @unlink($outputFilePath . ".png");
-    } elseif ($type === IMG_PNG) {
-        $res = imagecreatefrompng($orgFilePath);
-    } elseif ($type == IMG_GIF) {
-        $res = imagecreatefromgif($orgFilePath);
-    } else {
-        return "";
     }
-
-    if ($res === false) {
-        // 画像作れなかった
-        return "";
-    }
-
     // 問題なかったのでjpgにしましょう。
-    list($width, $height) = getSaveFileSize($w, $h);
-    $jpg = ImageCreateTrueColor($width, $height);
-    if (!imagecopyresized($jpg, $res, 0, 0, 0, 0, $width, $height, $w, $h)) {
-        // リサイズに失敗
+    if (!$res->setImageFormat("jpg")) {
+        // JPGへの変換失敗
         return "";
     }
-    if (!imagejpeg($jpg, $outputFilePath)) {
-        // 最後の書き出しで失敗
+    if (!$res->writeImage($outputFilePath)) {
+        // 書き込み失敗
         return "";
     }
 
