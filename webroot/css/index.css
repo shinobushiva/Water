@@ -121,11 +121,11 @@ body {
 }
 
 #rousui_chk .onoffswitch-inner:before {
-    content: "非表示";
+    content: "水漏れ";
     background-color: #73CB4F;
 }
 #rousui_chk .onoffswitch-inner:after {
-    content: "非表示";
+    content: "水漏れ";
 }
 
 #no_chk .onoffswitch-inner:before {
