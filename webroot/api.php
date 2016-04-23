@@ -19,10 +19,10 @@ $rows =[];
 if (count($flgs) > 0 && ($flgs[0]) != "") {
 
     // rousui table
-    //if(in_array(4, $flgs)){
+    if(in_array(4, $flgs)){
         $sql = "SELECT * FROM rousui";
         $r_rows = DB::conn()->rows($sql, $params);
-    //}
+    }
 
     // info table
     $sql = "SELECT * FROM info WHERE time > ? AND time < ? ";

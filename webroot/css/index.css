@@ -120,6 +120,13 @@ body {
     margin: 2px;
 }
 
+#rousui_chk .onoffswitch-inner:before {
+    content: "非表示";
+    background-color: #73CB4F;
+}
+#rousui_chk .onoffswitch-inner:after {
+    content: "非表示";
+}
 
 #no_chk .onoffswitch-inner:before {
     content: "出ない";
