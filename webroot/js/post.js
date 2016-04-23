@@ -14,7 +14,7 @@
         setStorage()
     });
     
-    var markers = ['no', 'ok', 'go'];
+    var markers = ['no', 'ok', 'go', 'notdrink'];
     var marker = 0 ;// Selected marker
     if (!navigator.geolocation)
         document.getElementById('now').style.display = 'none';
