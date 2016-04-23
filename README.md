@@ -52,6 +52,16 @@ mysql> use water;
 mysql> water.sqlのSQLを実行する
 ```
 
+### .envによる環境変数設定
+.env.templateを.envにリネーム後、各環境変数を設定。
+現状おおまかに下記の環境変数がある。
+
+- MySQL (DB...)
+- AWS S3 (AWS...)
+- Digest認証 (DIGEST...)
+- Memcached (SESSION...)
+- CSRF対策 (CSRF...)
+
 ## 開発メンバー
 菊川 稀玲,
 和泉 信生,

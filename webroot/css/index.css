@@ -48,8 +48,8 @@ body {
 }
 
 #time-range {
-    float: right;
-    width: 70%;
+    /*float: right;*/
+    /*width: 70%;*/
     text-align: center;
 }
 
@@ -63,13 +63,15 @@ body {
 }
 
 #water_filter{
-    float: left;
-    width: 30%;
+    /*float: left;*/
+    /*width: 30%;*/
     text-align: left;
+    position: relative;
+    overflow: auto;
 }
 #filter_options{
-    overflow: auto;
-    margin: 5px;
+    overflow: visible;
+    margin: 10px;
 }
 
 .owl-carousel .item {
@@ -110,4 +112,43 @@ body {
 .ui-slider-horizontal .ui-slider-handle {
     top: -.5em;
     margin-left: -.6em;
+}
+
+
+#water_filter div{
+    float: left;
+    margin: 2px;
+}
+
+
+#no_chk .onoffswitch-inner:before {
+    content: "出ない";
+    background-color: #D0021B;
+}
+#no_chk .onoffswitch-inner:after {
+    content: "出ない";
+}
+
+#ok_chk .onoffswitch-inner:before {
+    content: "出る";
+    background-color: #164B8A;
+}
+#ok_chk .onoffswitch-inner:after {
+    content: "出る";
+}
+
+#go_chk .onoffswitch-inner:before {
+    content: "提供可能";
+    background-color: #F5A623;
+}
+#go_chk .onoffswitch-inner:after {
+    content: "提供可能";
+}
+
+#notdrink_chk .onoffswitch-inner:before {
+    content: "飲めない";
+    background-color: #939393;
+}
+#notdrink_chk .onoffswitch-inner:after {
+    content: "飲めない";
 }

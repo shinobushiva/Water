@@ -29,7 +29,6 @@
     <h4>この情報を解決済みにしてもよろしいですか？</h4>
     <br>
     <form name='resolve' method='POST' action='resolve.php'>
-        <input type=hidden name='_token' value='{{ csrfToken() }}'>
         <input type=hidden name='post_time' value='{{ post_time }}'>
         <input type=hidden name='resolve_flg' value='yes'>
         <input type='submit' name='submit' value='解決済みにする'/>

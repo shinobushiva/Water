@@ -14,7 +14,6 @@
 <body>
 {% include "analyticstracking.html" %}
 <form action="{{ php_self }}" method="POST" id="post" onsubmit="return confirm('送信してもいいですか？');">
-    <input type="hidden" name="_token" value="{{ csrfToken() }}">
     <br>
     <h2>ニュース</h2>
     <div class="box">

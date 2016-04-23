@@ -29,7 +29,6 @@
     <h4>この情報を削除してもよろしいですか？</h4>
     <br>
     <form name='del' method='POST' action='delete.php'>
-        <input type=hidden name='_token' value='{{ csrfToken() }}'>
         <input type=hidden name='post_time' value='{{ post_time }}'>
         <input type=hidden name='del_flg' value='yes'>
         <input type='submit' name='submit' value='削除'/>
