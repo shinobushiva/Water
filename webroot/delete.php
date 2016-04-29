@@ -1,7 +1,7 @@
 <?php
 require_once("../bootstrap.php");
 
-$post_time = (int)$_POST['post_time'];
+$post_time = getPostTime();
 
 $now = time();
 

@@ -165,3 +165,41 @@ function callApi($method, $url, $data = false){
 
     return json_decode($result, true);
 }
+
+/**
+ * @return int
+ */
+function getPostTime()
+{
+    if($_SERVER['REQUEST_METHOD'] === 'GET') {
+        return filter_input(INPUT_GET, 'post_time', FILTER_VALIDATE_INT);
+    }
+
+    return filter_input(INPUT_POST, 'post_time', FILTER_VALIDATE_INT);
+}
+
+require_once AUTH_DIR . '/AntiCSRF.php';
+use Mizuderu\Auth\AntiCSRF;
+
+/**
+ * CSRF対策トークンを生成
+ *
+ * @return string
+ */
+function csrfToken()
+{
+    return AntiCSRF::fromEnv()->generateToken();
+}
+
+/**
+ * CSRF対策トークンを検証
+ * 不正ならステータスコード400でレスポンスを返す
+ */
+function validateCsrfTokenOrDie()
+{
+    $token = filter_input(INPUT_POST, '_token');
+    if(!AntiCSRF::fromEnv()->validate($token)) {
+        header('Content-Type: text/plain; charset=UTF-8', true, 400);
+        die('不正なリクエストです。');
+    }
+}

@@ -30,6 +30,7 @@
     水道から水が出ていますか？
 </div>
 <form action="{{ php_self }}" method="POST" id="post" onsubmit="return confirm('送信してもいいですか？');">
+    <input type="hidden" name="_token" value="{{ csrfToken() }}">
     <input type="hidden" id="time" name="time" value="">
     <input type="hidden" name="locate" id="locate" value="">
 
