@@ -4,7 +4,7 @@ require_once("../bootstrap.php");
 
 $db = DB::conn();
 $now = time();
-$from_time = $now - (60 * 60 * 24 * 2);
+$from_time = 1460559600;
 $rows = $db->rows("SELECT * FROM info WHERE time > ? ORDER BY time ASC", [$from_time]);
 $r_rows = $db->rows("SELECT * FROM rousui WHERE time > ? ORDER BY time ASC", [$from_time]);
 

@@ -1,5 +1,3 @@
-[tcnksm](https://github.com/tcnksm)
-=======
 # 熊本地震で発生した水不足を解消するためのWaterMapの開発用です。
 
 ## 使用方法
