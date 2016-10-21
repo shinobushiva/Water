@@ -107,8 +107,8 @@ function plotData(t_position) {
     var markers = ['no', 'ok', 'go', 'notdrink', 'rousui'];
 
     var m = document.getElementById('map');
-    window.DEFAULT_LAT = 32.7858659;
-    window.DEFAULT_LNG = 130.7633434;
+    window.DEFAULT_LAT = 35.3362854;
+    window.DEFAULT_LNG = 133.5450567;
     window.DEFAULT_ZOOM = 9;
 
     // 変更が加えられた際は SessionStorage から読み込む

@@ -71,6 +71,8 @@ mysql> water.sqlのSQLを実行する
 石塚 隆博,
 豊田 啓介,
 内藤 豊,
+松岡 祥仁,
 テスター見習い　森下 功啓,
-JAWS-UG(AWS Users Group-Japan)の有志約30名,
+関西PHP-UGの有志,
+JAWS-UG(AWS Users Group-Japan)の有志,
 AWSJ(AWS Japan)の有志
