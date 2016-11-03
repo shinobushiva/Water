@@ -32,3 +32,8 @@ SessionManager::configure(new MemcachedSessionSetting(array(
 )));
 
 SessionManager::start();
+
+// anti csrf protection
+if(in_array($_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'DELETE', 'PATCH'])) {
+    validateCsrfTokenOrDie();
+}

@@ -43,7 +43,7 @@ function attachMessage(marker, post_time, flg, comment, rousui_image_url, rousui
         var resolve_str = "";
         // 漏水の画像があるなら表示
         if(flg == "rousui" && rousui_status != 1){
-            resolve_str = "<br>" + "<a href='' onclick='document.resolve.submit();return false;'>解決済みにする</a>" + "<form name='resolve' method='POST' action='resolve.php'>" + "<input type=hidden name='post_time' value='" + post_time +"'> ";
+            resolve_str = "<br>" + "<a href='' onclick='document.resolve.submit();return false;'>解決済みにする</a>" + "<form name='resolve' method='GET' action='resolve.php'>" + "<input type=hidden name='post_time' value='" + post_time +"'> ";
         }
 
         var rousui_img = "";
@@ -56,7 +56,7 @@ function attachMessage(marker, post_time, flg, comment, rousui_image_url, rousui
         var del_str = "";
         //5分以内なら削除可能
         if(flg != "rousui" && parseInt(now.getTime() / 1000) < (parseInt(post_time) + (60 * 5))){
-            del_str = "<br><br>" + "<a href='' onclick='document.del.submit();return false;'>この情報を削除する</a>" + "<form name='del' method='POST' action='delete.php'>" + "<input type=hidden name='post_time' value='" + post_time +"'> ";
+            del_str = "<br><br>" + "<a href='' onclick='document.del.submit();return false;'>この情報を削除する</a>" + "<form name='del' method='GET' action='delete.php'>" + "<input type=hidden name='post_time' value='" + post_time +"'> ";
         }
 
         new google.maps.Geocoder().geocode({
